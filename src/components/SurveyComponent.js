@@ -38,6 +38,32 @@ const SurveyComponent = () => {
   const survey = new Model(surveyJson);
   survey.applyTheme(themeJson);
   survey.onComplete.add(alertResults);
+  const customCss = {
+    page: {
+      title: "page-title",
+    },
+    /*navigation: {
+      complete: "sd-btn--action sd-navigation__complete-btn",
+      prev: "sd-navigation__prev-btn",
+      next: "sd-navigation__next-btn",
+      start: "sd-navigation__start-btn",
+      preview: "sd-navigation__preview-btn",
+      edit: "",
+    },
+    question: {
+      content: "question-content",
+      answered: "question-answered",
+      titleRequired: "question-title-required",
+    },*/
+  };
+  survey.css = customCss;
+  /*survey.onUpdateQuestionCssClasses.add(function (_, options) {
+    const classes = options.cssClasses;
+    classes.root = "question-root";
+    if (options.question.getType() === "title") {
+      classes.root += " question-root-checkboxes";
+    }
+  });*/
 
   return <Survey model={survey} />;
 };
