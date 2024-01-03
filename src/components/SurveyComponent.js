@@ -27,11 +27,15 @@ const SurveyComponent = () => {
       `${WEB_SERVICE_URL}/formDefinitions/${SURVEY_ID}`
     );
     const jsonResponse = await response.json();
-    console.log(jsonResponse);
     setSurveyJson(JSON.parse(jsonResponse.formDefinition));
+  };
+  const updateUTM = () => {
+    let el = document.getElementById("urn");
+    if (el) el.textContent = UTM;
   };
   useEffect(() => {
     getSurveyJson();
+    setTimeout(updateUTM, 200);
   }, []);
 
   const alertResults = useCallback((sender) => {

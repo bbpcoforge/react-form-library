@@ -5,14 +5,17 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #deedf2;
+  background-color: #edf6f8;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
-
+h6 {
+  font-size: 20px !important;
+  font-weight: 900 !important;
+}
 .page-title {
   display: block !important;
   margin-left: auto !important;
@@ -36,7 +39,7 @@ code {
 .sd-navigation__prev-btn,
 .sd-navigation__complete-btn {
   color: #fff !important;
-  background-color: #e60a3e !important;
+  background-color: #ec0000 !important;
   border-radius: 40px !important;
   line-height: 8px !important;
   width: 220px !important;
@@ -109,10 +112,16 @@ code {
   font-weight: 500 !important;
   font-size: 13px !important;
   line-height: 15px !important;
+  color: #716d6d !important;
+}
+.sd-progress-buttons__list-element--current .sd-progress-buttons__page-title,
+.sd-progress-buttons__list-element--current
+  .sd-progress-buttons__page-description {
+  color: #000 !important;
 }
 .sd-progress-buttons__list li:before {
-  background-color: #8dd9ca !important;
-  border-color: #8dd9ca !important;
+  background-color: #e49c9c !important;
+  border-color: #e49c9c !important;
 }
 .sd-progress-buttons__list li:after {
   background-color: #d4d4d4 !important;
@@ -123,14 +132,14 @@ code {
 }
 
 .sd-progress-buttons__list li.sd-progress-buttons__list-element--passed:before {
-  background-color: var(--primary, #19b394) !important;
-  border-color: var(--primary, #19b394) !important;
+  background-color: var(--primary, #ec0000) !important;
+  border-color: var(--primary, #ec0000) !important;
 }
 .sd-progress-buttons__list li.sd-progress-buttons__list-element--current:before,
 .sd-progress-buttons__list
   li.sd-progress-buttons__list-element--passed.sd-progress-buttons__list-element--current:before {
   background-color: var(--background, #fff) !important;
-  border-color: var(--primary, #19b394) !important;
+  border-color: var(--primary, #ec0000) !important;
 }
 .sd-progress-buttons__list li:after {
   content: "" !important;
@@ -143,7 +152,7 @@ code {
 .sd-progress-buttons__list
   li.sd-progress-buttons__list-element--passed
   + li:after {
-  background-color: #8dd9ca !important;
+  background-color: #e49c9c !important;
 }
 
 .sd-progress-buttons__container-center {
