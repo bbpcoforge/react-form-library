@@ -154,19 +154,19 @@ code {
 }
 
 @media (min-width: 800px) {
-  #sp_122 .sd-image,
-  #sp_125 .sd-image,
+  #sp_123 .sd-image,
   #sp_127 .sd-image,
-  #sp_128 .sd-image,
-  #sp_131 .sd-image {
+  #sp_129 .sd-image,
+  #sp_130 .sd-image,
+  #sp_133 .sd-image {
     position: relative !important;
     top: -110px !important;
   }
-  #sp_122 .page-title,
-  #sp_125 .page-title,
+  #sp_123 .page-title,
   #sp_127 .page-title,
-  #sp_128 .page-title,
-  #sp_131 .page-title {
+  #sp_129 .page-title,
+  #sp_130 .page-title,
+  #sp_133 .page-title {
     top: -80px !important;
   }
 }
@@ -175,11 +175,11 @@ code {
   .sd-progress-buttons__container {
     display: none !important;
   }
-  #sp_122 .sd-image,
-  #sp_125 .sd-image,
+  #sp_123 .sd-image,
   #sp_127 .sd-image,
-  #sp_128 .sd-image,
-  #sp_131 .sd-image {
+  #sp_129 .sd-image,
+  #sp_130 .sd-image,
+  #sp_133 .sd-image {
     position: relative !important;
     top: 10px !important;
   }
