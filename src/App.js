@@ -11,6 +11,7 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/:SURVEY_ID" element={<SurveyComponent />} />
             <Route path="/:SURVEY_ID/:UTM" element={<SurveyComponent />} />
           </Routes>
         </BrowserRouter>

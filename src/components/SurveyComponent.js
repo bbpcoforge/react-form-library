@@ -10,10 +10,16 @@ import Loader from "./Loader";
 import { WEB_SERVICE_URL } from "../constant";
 
 const SurveyComponent = () => {
-  const { SURVEY_ID, UTM } = useParams();
   const [surveyJson, setSurveyJson] = useState(json);
+
+  const { SURVEY_ID } = useParams();
   console.log("SURVEY_ID:", SURVEY_ID);
-  console.log("UTM:", UTM);
+
+  let search = window.location.search;
+  let params = new URLSearchParams(search);
+  const UTM = params.get("utm") || window.localStorage.getItem("utm");
+  UTM && window.localStorage.setItem("utm", UTM);
+  console.log("UTM:", params.get("utm"));
 
   const getSurveyJson = async () => {
     if (!SURVEY_ID) return;
