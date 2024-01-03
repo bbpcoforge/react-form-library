@@ -6,13 +6,16 @@ import "./tailwind.css";
 
 function App() {
   return (
-    <BrowserRouter>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/:SURVEY_ID/:UTM" element={<SurveyComponent />} />
-      </Routes>
-    </BrowserRouter>
+    <div className="bg-[#deedf2] flex justify-center">
+      <div className="md:w-1/2 w-[100%] justify-center">
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/:SURVEY_ID/:UTM" element={<SurveyComponent />} />
+          </Routes>
+        </BrowserRouter>
+      </div>
+    </div>
   );
 }
 

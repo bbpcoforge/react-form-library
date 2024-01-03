@@ -7,7 +7,7 @@ export const themeJson = {
   cssVariables: {
     "--sjs-general-backcolor": "rgba(255, 255, 255, 1)",
     "--sjs-general-backcolor-dark": "rgba(248, 248, 248, 1)",
-    "--sjs-general-backcolor-dim": "#DCF2F0",
+    "--sjs-general-backcolor-dim": "#deedf2",
     "--sjs-general-backcolor-dim-light": "rgba(249, 249, 249, 1)",
     "--sjs-general-backcolor-dim-dark": "rgba(243, 243, 243, 1)",
     "--sjs-general-forecolor": "rgba(0, 0, 0, 0.91)",
@@ -88,4 +88,18 @@ export const themeJson = {
   },
   themeName: "default",
   colorPalette: "light",
+  header: {
+    height: 256,
+    inheritWidthFrom: "survey",
+    textAreaWidth: 512,
+    overlapEnabled: false,
+    backgroundImageOpacity: 1,
+    backgroundImageFit: "cover",
+    logoPositionX: "right",
+    logoPositionY: "top",
+    titlePositionX: "left",
+    titlePositionY: "bottom",
+    descriptionPositionX: "left",
+    descriptionPositionY: "bottom",
+  },
 };

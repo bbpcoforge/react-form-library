@@ -13,7 +13,7 @@ function Home() {
     getSurveyJson();
   }, []);
   return (
-    <div className="flex justify-between mx-auto bg-[#eef6f8]">
+    <div className="flex justify-between mx-auto bg-[#deedf2]">
       <Sidebar items={surveyJsons} />
       <h1 className="w-full mt-28 mb-28 flex justify-center text-2xl">
         Form Renderer
