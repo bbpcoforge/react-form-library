@@ -75,7 +75,11 @@ const SurveyComponent = () => {
     }
   });*/
 
-  return <Survey model={survey} />;
+  return (
+    <div id={`formId_${SURVEY_ID}`}>
+      <Survey model={survey} />
+    </div>
+  );
 };
 
 function saveSurveyResults(json, surveyId, uid) {

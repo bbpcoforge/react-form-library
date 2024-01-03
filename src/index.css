@@ -161,19 +161,11 @@ h6 {
 }
 
 @media (min-width: 800px) {
-  #sp_123 .sd-image,
-  #sp_127 .sd-image,
-  #sp_129 .sd-image,
-  #sp_130 .sd-image,
-  #sp_133 .sd-image {
+  #formId_10013 .sd-image {
     position: relative !important;
     top: -110px !important;
   }
-  #sp_123 .page-title,
-  #sp_127 .page-title,
-  #sp_129 .page-title,
-  #sp_130 .page-title,
-  #sp_133 .page-title {
+  #formId_10013 .page-title {
     top: -80px !important;
   }
 }
@@ -182,11 +174,7 @@ h6 {
   .sd-progress-buttons__container {
     display: none !important;
   }
-  #sp_123 .sd-image,
-  #sp_127 .sd-image,
-  #sp_129 .sd-image,
-  #sp_130 .sd-image,
-  #sp_133 .sd-image {
+  #formId_10013 .sd-image {
     position: relative !important;
     top: 10px !important;
   }
