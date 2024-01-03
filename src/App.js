@@ -6,8 +6,8 @@ import "./tailwind.css";
 
 function App() {
   return (
-    <div className="bg-[#edf6f8] flex justify-center">
-      <div className="md:w-1/2 w-[100%] justify-center">
+    <div className="bg-[#edf6f8] lg:flex m-auto justify-center">
+      <div className="md:w-[100%] lg:w-1/2 justify-center">
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Home />} />

@@ -113,6 +113,7 @@ h6 {
   font-size: 13px !important;
   line-height: 15px !important;
   color: #716d6d !important;
+  white-space: break-spaces !important;
 }
 .sd-progress-buttons__list-element--current .sd-progress-buttons__page-title,
 .sd-progress-buttons__list-element--current
