@@ -89,7 +89,7 @@ export const themeJson = {
   themeName: "default",
   colorPalette: "light",
   header: {
-    height: 256,
+    height: 0,
     inheritWidthFrom: "survey",
     textAreaWidth: 512,
     overlapEnabled: false,
