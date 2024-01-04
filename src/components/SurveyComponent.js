@@ -35,7 +35,7 @@ const SurveyComponent = () => {
   };
   useEffect(() => {
     getSurveyJson();
-    setTimeout(updateUTM, 200);
+    setTimeout(updateUTM, 500);
   }, []);
 
   const alertResults = useCallback((sender) => {
