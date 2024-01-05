@@ -11,43 +11,69 @@ import { WEB_SERVICE_URL } from "../constant";
 
 const SurveyComponent = () => {
   const [surveyJson, setSurveyJson] = useState(json);
-
+  var surveyData = null;
+  // Get SURVEY_ID from url param
   const { SURVEY_ID } = useParams();
   console.log("SURVEY_ID:", SURVEY_ID);
-
+  // Get UTM from search param and save in localStorage
   let search = window.location.search;
   let params = new URLSearchParams(search);
   const UTM = params.get("utm") || window.localStorage.getItem("utm");
   UTM && window.localStorage.setItem("utm", UTM);
-  console.log("UTM:", params.get("utm"));
-
+  console.log("UTM:", UTM);
+  // Get survey form definition
   const getSurveyJson = async () => {
     if (!SURVEY_ID) return;
-    const response = await fetch(
-      `${WEB_SERVICE_URL}/formDefinitions/${SURVEY_ID}`
-    );
-    const jsonResponse = await response.json();
-    setSurveyJson(JSON.parse(jsonResponse.formDefinition));
+    try {
+      const response = await fetch(
+        `${WEB_SERVICE_URL}/formDefinitions/${SURVEY_ID}`
+      );
+      const jsonResponse = await response.json();
+      setSurveyJson(JSON.parse(jsonResponse.formDefinition));
+    } catch (err) {
+      console.log("Error in loding form definition!!");
+    }
   };
+  // Restore survey results /search?formId=343423&utm=sfadsfsda
+  const getSurveyData = async () => {
+    if (!SURVEY_ID || !UTM) return;
+    try {
+      const response = await fetch(
+        `${WEB_SERVICE_URL}/formDatas/search?formId=${SURVEY_ID}&utm=${UTM}`
+      );
+      surveyData = await response.json();
+      if (surveyData.formData) {
+        survey.data = JSON.parse(surveyData.formData);
+      }
+    } catch (err) {
+      console.log("Error in loding form data!!");
+    }
+  };
+  //Populate UTM on form
   const updateUTM = () => {
     let el = document.getElementById("urn");
     if (el) el.textContent = UTM;
   };
+
   useEffect(() => {
     getSurveyJson();
     setTimeout(updateUTM, 500);
+    getSurveyData();
   }, []);
+  useEffect(() => {
+    getSurveyData();
+  }, [surveyJson]);
 
-  const alertResults = useCallback((sender) => {
-    //const results = JSON.stringify(sender.data);
-    //alert(results);
-    saveSurveyResults(sender.data, SURVEY_ID, UTM);
+  const saveResults = useCallback((sender) => {
+    console.log("Existing Data:", surveyData);
+    const dataId = surveyData && surveyData.id ? surveyData.id : null;
+    saveSurveyResults(sender.data, SURVEY_ID, UTM, dataId);
   }, []);
 
   if (!surveyJson) return <Loader />;
   const survey = new Model(surveyJson);
   survey.applyTheme(themeJson);
-  survey.onComplete.add(alertResults);
+  survey.onComplete.add(saveResults);
   const customCss = {
     page: {
       title: "page-title",
@@ -82,11 +108,14 @@ const SurveyComponent = () => {
   );
 };
 
-function saveSurveyResults(json, surveyId, uid) {
+function saveSurveyResults(json, surveyId, uid, dataId) {
   const dataStr = JSON.stringify(json);
   const data = { formData: dataStr, formId: surveyId, utm: uid };
-  fetch(`${WEB_SERVICE_URL}/formDatas`, {
-    method: "POST",
+  const url = dataId
+    ? `${WEB_SERVICE_URL}/formDatas/${dataId}`
+    : `${WEB_SERVICE_URL}/formDatas`;
+  fetch(url, {
+    method: dataId ? "PUT" : "POST",
     headers: {
       "Content-Type": "application/json;charset=UTF-8",
     },
