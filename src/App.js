@@ -1,8 +1,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import SurveyComponent from "./components/SurveyComponent";
 import Home from "./components/Home";
-import Navbar from "./components/Navbar";
 import "./tailwind.css";
+import "./fontFace.css";
 
 function App() {
   return (
