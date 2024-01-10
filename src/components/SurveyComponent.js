@@ -1,17 +1,141 @@
 import { useState, useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
-import { Model } from "survey-core";
+import { Model, ComponentCollection, Serializer } from "survey-core";
 import { Survey } from "survey-react-ui";
 import "survey-core/defaultV2.css";
 import "../index.css";
-import { json } from "../json";
+//import { json } from "../json";
 import { themeJson } from "../theme";
 import Loader from "./Loader";
 import { WEB_SERVICE_URL } from "../constant";
+import { registerColorPicker } from "./custom/ColorPicker";
+import { registerYesNoBoolean } from "./custom/YesNoBoolean";
+
+//Register new "color-picker" component
+registerColorPicker();
+//Register new "YesNoBoolean" component
+registerYesNoBoolean();
+//Register new "country" component
+ComponentCollection.Instance.add({
+  //Unique component name. It becomes a new question type. Please note, it should be written in lowercase.
+  name: "country",
+  //The text that shows on toolbox
+  title: "Country",
+  //The actual question that will do the job
+  questionJSON: {
+    type: "dropdown",
+    placeholder: "Select a country...",
+    choicesByUrl: {
+      url: "https://surveyjs.io/api/CountriesExample",
+    },
+  },
+});
+//Register new "full name" component
+ComponentCollection.Instance.add({
+  name: "fullname",
+  title: "Full Name",
+  elementsJSON: [
+    { type: "text", name: "firstName", title: "First Name", isRequired: true },
+    // Optional question, hidden by default
+    {
+      type: "text",
+      name: "middleName",
+      title: "Middle Name",
+      startWithNewLine: false,
+      visible: false,
+    },
+    {
+      type: "text",
+      name: "lastName",
+      title: "Last Name",
+      isRequired: true,
+      startWithNewLine: false,
+    },
+  ],
+
+  onInit() {
+    // Add a `showMiddleName` Boolean property to the `fullname` question type
+    Serializer.addProperty("fullname", {
+      name: "showMiddleName",
+      type: "boolean",
+      default: false,
+      category: "general",
+    });
+  },
+  // Set the Middle Name question visibility at startup
+  onLoaded(question) {
+    this.changeMiddleNameVisibility(question);
+  },
+  // Track the changes of the `showMiddleName` property
+  onPropertyChanged(question, propertyName, newValue) {
+    if (propertyName === "showMiddleName") {
+      this.changeMiddleNameVisibility(question);
+    }
+  },
+  changeMiddleNameVisibility(question) {
+    const middleName = question.contentPanel.getQuestionByName("middleName");
+    if (!!middleName) {
+      // Set the `middleName` question's visibility based on the composite question's `showMiddleName` property
+      middleName.visible = question.showMiddleName;
+    }
+  },
+});
+//Register new "address" component
+ComponentCollection.Instance.add({
+  name: "shippingaddress",
+  title: "Shipping Address",
+  elementsJSON: [
+    {
+      type: "comment",
+      name: "businessAddress",
+      title: "Business Address",
+      isRequired: true,
+    },
+    {
+      type: "boolean",
+      name: "shippingSameAsBusiness",
+      title: "Shipping address same as business address",
+      defaultValue: true,
+    },
+    {
+      type: "comment",
+      name: "shippingAddress",
+      title: "Shipping Address",
+      // Use the `composite` prefix to access a question nested in the composite question
+      enableIf: "{composite.shippingSameAsBusiness} <> true",
+      isRequired: true,
+    },
+  ],
+  onValueChanged(question, name) {
+    const businessAddress =
+      question.contentPanel.getQuestionByName("businessAddress");
+    const shippingAddress =
+      question.contentPanel.getQuestionByName("shippingAddress");
+    const shippingSameAsBusiness = question.contentPanel.getQuestionByName(
+      "shippingSameAsBusiness"
+    );
+
+    if (name === "businessAddress") {
+      // If "Shipping address same as business address" is selected
+      if (shippingSameAsBusiness.value == true) {
+        // Copy the Business Address value to Shipping Address
+        shippingAddress.value = businessAddress.value;
+      }
+    }
+    if (name === "shippingSameAsBusiness") {
+      // If "Shipping address same as business address" is selected, copy the Business Address to Shipping Address
+      // Otherwise, clear the Shipping Address value
+      shippingAddress.value =
+        shippingSameAsBusiness.value == true ? businessAddress.value : "";
+    }
+  },
+});
 
 const SurveyComponent = () => {
-  const [surveyJson, setSurveyJson] = useState(json);
-  var surveyData = null;
+  const [surveyJson, setSurveyJson] = useState(null);
+  const [surveyTheme, setSurveyTheme] = useState(themeJson);
+  const [surveyData, setSurveyData] = useState(null);
+  var formDatas = null;
   // Get SURVEY_ID from url param
   const { SURVEY_ID } = useParams();
   console.log("SURVEY_ID:", SURVEY_ID);
@@ -29,24 +153,30 @@ const SurveyComponent = () => {
         `${WEB_SERVICE_URL}/formDefinitions/${SURVEY_ID}`
       );
       const jsonResponse = await response.json();
-      setSurveyJson(JSON.parse(jsonResponse.formDefinition));
+      const jsonFormDefinition = JSON.parse(jsonResponse.formDefinition);
+      console.log("jsonFormDefinition::", jsonFormDefinition);
+      setSurveyJson(jsonFormDefinition.json);
+      setSurveyTheme(jsonFormDefinition.theme);
     } catch (err) {
       console.log("Error in loding form definition!!");
     }
   };
-  // Restore survey results /search?formId=343423&utm=sfadsfsda
+  // Restore survey results /api/formDatas/search?formId=10003&utm=123123
   const getSurveyData = async () => {
     if (!SURVEY_ID || !UTM) return;
     try {
       const response = await fetch(
         `${WEB_SERVICE_URL}/formDatas/search?formId=${SURVEY_ID}&utm=${UTM}`
       );
-      surveyData = await response.json();
-      if (surveyData.formData) {
-        survey.data = JSON.parse(surveyData.formData);
+      const responseJson = await response.json();
+      if (responseJson.formData) {
+        formDatas = responseJson;
+        const formData = JSON.parse(responseJson.formData);
+        console.log("formData", formData);
+        setSurveyData(formData);
       }
     } catch (err) {
-      console.log("Error in loding form data!!");
+      console.log("Error in loding form data!!", err);
     }
   };
   //Populate UTM on form
@@ -57,22 +187,21 @@ const SurveyComponent = () => {
 
   useEffect(() => {
     getSurveyJson();
+    getSurveyData();
     setTimeout(updateUTM, 500);
-    getSurveyData();
   }, []);
-  useEffect(() => {
-    getSurveyData();
-  }, [surveyJson]);
 
   const saveResults = useCallback((sender) => {
-    console.log("Existing Data:", surveyData);
-    const dataId = surveyData && surveyData.id ? surveyData.id : null;
+    console.log("saveResults formDatas:", formDatas);
+    console.log("saveResults sender:", sender);
+    const dataId = formDatas && formDatas.id ? formDatas.id : null;
     saveSurveyResults(sender.data, SURVEY_ID, UTM, dataId);
   }, []);
 
   if (!surveyJson) return <Loader />;
   const survey = new Model(surveyJson);
-  survey.applyTheme(themeJson);
+  survey.applyTheme(surveyTheme);
+  if (surveyData) survey.data = surveyData;
   survey.onComplete.add(saveResults);
   const customCss = {
     page: {
@@ -93,13 +222,14 @@ const SurveyComponent = () => {
     },*/
   };
   survey.css = customCss;
-  /*survey.onUpdateQuestionCssClasses.add(function (_, options) {
+  //css override for yes/no boolean
+  survey.onUpdateQuestionCssClasses.add(function (_, options) {
     const classes = options.cssClasses;
-    classes.root = "question-root";
-    if (options.question.getType() === "title") {
-      classes.root += " question-root-checkboxes";
+    //classes.root = "question-root";
+    if (options.question.getType() === "boolean") {
+      classes.root += " question-root-boolean";
     }
-  });*/
+  });
 
   return (
     <div id={`formId_${SURVEY_ID}`}>

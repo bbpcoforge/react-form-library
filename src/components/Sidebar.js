@@ -4,11 +4,10 @@ function Sidebar({ items }) {
       <>
         {items.map((item) => {
           const formDefinition = JSON.parse(item.formDefinition);
-          const dispayText = formDefinition.title || `Form ${item.id}`;
-          console.log(formDefinition);
+          const dispayText = formDefinition.json.title || `Form ${item.id}`;
           return (
             <a
-              href={`/${item.id}/bipin.pandey@coforge.com`}
+              href={`/${item.id}?utm=123123`}
               className="font-medium text-sm items-center rounded-lg text-gray-900 px-4 py-2.5 flex
                     transition-all duration-200 hover:bg-gray-200 group cursor-pointer"
             >

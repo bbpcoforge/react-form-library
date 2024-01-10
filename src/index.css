@@ -173,7 +173,33 @@ h6 {
   position: relative;
   top: 120px;
 }
-
+/* css override for yes/no boolean 
+.question-root-boolean .sd-boolean {
+  box-shadow: none;
+  background-color: transparent;
+}
+.question-root-boolean .sd-boolean__thumb {
+  border-radius: 5px !important;
+  border: 2px solid #4692b2 !important;
+  background-color: #c3dee7 !important;
+  color: #000 !important;
+}
+.question-root-boolean .sd-boolean__thumb-ghost {
+  border-radius: 5px !important;
+  border: 2px solid #4692b2 !important;
+  background-color: #fff !important;
+  color: #000 !important;
+}
+.question-root-boolean .sd-boolean.sd-boolean--allowhover:focus-within {
+  box-shadow: none !important;
+}
+.question-root-boolean .sd-boolean__switch {
+  width: 94% !important;
+}
+.question-root-boolean label .sd-boolean__thumb-ghost {
+  margin-right: 10px !important;
+}
+*/
 @media (min-width: 800px) {
   #formId_10013 .sd-image {
     position: relative !important;
