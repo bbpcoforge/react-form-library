@@ -10,11 +10,14 @@ import Loader from "./Loader";
 import { WEB_SERVICE_URL } from "../constant";
 import { registerColorPicker } from "./custom/ColorPicker";
 import { registerYesNoBoolean } from "./custom/YesNoBoolean";
+import { registerAddressAutoComplete } from "./custom/AddressAutoComplete";
 
 //Register new "color-picker" component
 registerColorPicker();
 //Register new "YesNoBoolean" component
 registerYesNoBoolean();
+//Register new "AddressAutoComplete" component
+registerAddressAutoComplete();
 //Register new "country" component
 ComponentCollection.Instance.add({
   //Unique component name. It becomes a new question type. Please note, it should be written in lowercase.
